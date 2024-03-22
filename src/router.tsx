@@ -6,13 +6,12 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import ForgotPassword from "./pages/ForgotPassword";
-// import { Modal } from "flowbite-react";
 
 export const MyRouter = () => {
   const alert: AlertState = useAppSelector((state) => state.general.alert);
 
   return (
-    <div style={{ height: "100%" }} className="bg background">
+    <div style={{ height: "100vh" }} className="bg background">
       {alert.open && (
         <CustomAlert
           alertProps={{

@@ -52,6 +52,7 @@ function ChangePassword({}: Props) {
             className="bg-background border border-border text-text sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
             onChange={(e) => setOldPassword(e.target.value)}
             value={oldPassword}
+            placeholder="Enter old password"
             required
           />
         </div>
@@ -78,6 +79,7 @@ function ChangePassword({}: Props) {
               className="bg-background border-border text-text sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
               onChange={(e) => setConfirmPassword(e.target.value)}
               value={confirmPassword}
+              placeholder="Confirm password"
               required
             />
           </div>

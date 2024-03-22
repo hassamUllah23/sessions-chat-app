@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import "./App.css";
 import { MyRouter } from "./router";
 import "preline/preline";
@@ -9,6 +10,14 @@ declare global {
 }
 
 function App() {
+  useEffect(() => {
+    if (localStorage.getItem("theme") === "dark") {
+      document.querySelector("body")?.classList.replace("light", "dark");
+    } else {
+      document.querySelector("body")?.classList.replace("dark", "light");
+    }
+  }, []);
+
   return (
     <div>
       <MyRouter />

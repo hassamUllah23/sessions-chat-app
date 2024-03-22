@@ -9,10 +9,6 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-  console.log(
-    "import.meta.env.VITE_BACKEND_ADDRESS: ",
-    import.meta.env.VITE_BACKEND_ADDRESS,
-  );
   const configLocal = { ...config };
   const token: string | null = localStorage.getItem("token");
   if (token && configLocal.headers) {

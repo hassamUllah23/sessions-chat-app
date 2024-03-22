@@ -18,7 +18,7 @@ function Navbar({}: Props) {
 
   return (
     <nav className="bg-background border-border">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+      <div className="flex flex-wrap items-center justify-between p-4 w-full px-10">
         <div className="flex items-center space-x-3 rtl:space-x-reverse">
           <img src="messenger.png" className="h-8" />
           <span className="self-center text-2xl font-semibold whitespace-nowrap text-text">
@@ -42,9 +42,9 @@ function Navbar({}: Props) {
           >
             <path
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="M1 1h15M1 7h15M1 13h15"
             />
           </svg>
@@ -56,6 +56,7 @@ function Navbar({}: Props) {
                 dispatch(setOpenProfileModal(true));
               }}
               label="Profile"
+              overlay="#profile-modal"
               icon={<LuUser className="text-text" />}
             />
             <ListItem
@@ -64,6 +65,7 @@ function Navbar({}: Props) {
               }}
               label="Settings"
               icon={<IoSettingsOutline className="text-text" />}
+              overlay="#settings-modal"
             />
             <ListItem
               handleClick={handleLogout}
@@ -81,20 +83,23 @@ const ListItem = ({
   label,
   icon,
   handleClick,
+  overlay,
 }: {
   label: string;
   icon: any;
   handleClick: any;
+  overlay?: string;
 }) => {
   return (
     <li
       className="flex flex-row w-fit gap-2 items-center bg-background"
       onClick={handleClick}
+      data-hs-overlay={overlay}
     >
       {icon}
       <p
         className={
-          "cursor-pointer block py-2 px-3 text-text rounded hover:bgbackground/50 md:p-0  "
+          "cursor-pointer block py-2 px-3 text-text rounded hover:bg-background/50 md:p-0  "
         }
       >
         {label}

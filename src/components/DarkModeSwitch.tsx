@@ -22,7 +22,7 @@ function DarkModeSwitch({}: Props) {
   };
 
   return (
-    <div className="w-full">
+    <div>
       <Switch
         checked={checked}
         onChange={handleChange}
