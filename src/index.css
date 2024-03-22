@@ -1,0 +1,25 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+body {
+    font-family: 'Inter', sans-serif;
+  }
+
+.light {
+    --color-primary: 8, 107, 189;
+    --color-background: 249,250,251;
+    --color-card: 255,255,255;
+    --color-text: 0, 0, 0;
+    --color-link: 107, 114, 128;
+    --color-border: 209 213 219;
+}
+
+.dark {
+    --color-primary: 10, 56, 94;
+    --color-background: 15, 25, 36;
+    --color-card: 31,41,55;
+    --color-text: 255, 255, 255;
+    --color-link: 156 163 175;
+    --color-border: 107, 114, 128;
+}
