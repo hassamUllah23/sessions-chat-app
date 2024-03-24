@@ -8,7 +8,7 @@ function ConversationsList({}: Props) {
   return (
     <div className="w-full h-full">
       <div className="flex flex-row w-full">
-        {convos.map((convo) => {
+        {convos.map((_convo) => {
           return <ConversationListItem conversation={{}} />;
         })}
       </div>

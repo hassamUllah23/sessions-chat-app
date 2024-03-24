@@ -20,7 +20,7 @@ function ChangePassword({}: Props) {
       oldPassword: oldPassword,
       newPassword: newPassword,
     }).then((response) => {
-      if (response.error) {
+      if (!response) {
         dispatch(
           setAlert({
             message: "Something went wrong",
@@ -31,7 +31,7 @@ function ChangePassword({}: Props) {
       } else {
         dispatch(
           setAlert({
-            message: "Password changed",
+            message: "Password changed succesfully",
             open: true,
             severity: "success",
           }),

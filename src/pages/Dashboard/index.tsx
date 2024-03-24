@@ -3,10 +3,18 @@ import { CurrentConversation } from "./components/CurrentConversation";
 import { Navbar } from "../../components/Navbar";
 import { ProfileModal } from "./components/ProfileModal";
 import { SettingsModal } from "./components/SettingsModal";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 type Props = {};
 
 function Dashboard({}: Props) {
+  const location = useLocation();
+
+  useEffect(() => {
+    window.HSStaticMethods.autoInit();
+  }, [location.pathname]);
+
   return (
     <div className="h-full w-full bg-background">
       <Navbar />

@@ -4,7 +4,7 @@ type Props = {
   conversation: Conversation;
 };
 
-function ConversationListItem({ conversation }: Props) {
+function ConversationListItem({}: Props) {
   return <div>ConversationListItem</div>;
 }
 

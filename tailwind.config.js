@@ -15,6 +15,7 @@ export default {
         text: "rgba(var(--color-text))",
         border: "rgba(var(--color-border))",
         link: "rgba(var(--color-link))",
+        modal: "rgba(var(--color-modal-background))",
       },
     },
   },

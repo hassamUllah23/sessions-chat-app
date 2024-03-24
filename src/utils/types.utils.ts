@@ -33,6 +33,10 @@ export type ChangePasswordResponse = {
   error?: string | undefined;
 };
 
+export type ForgotPasswordParams = {
+  email: string;
+};
+
 export type LoginResponse = {
   token?: string | undefined;
   userId?: string | undefined;

@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../../store/store";
+import { useAppDispatch } from "../../../store/store";
 import { InputLabel } from "../../../components";
 import { ChangePassword } from "./ChangePassword";
 import { UsersApiClient } from "../../../apis/users.api";
@@ -60,10 +60,10 @@ function ProfileModal({}: Props) {
     <div className="h-min">
       <div
         id="profile-modal"
-        className="hs-overlay bg-gray-500/15 hidden size-full fixed top-0 start-0 !z-[100] overflow-x-hidden overflow-y-auto"
+        className="hs-overlay bg-gray-500/30 dark:bg-gray-900/75 hidden size-full fixed top-0 start-0 !z-[100] overflow-x-hidden overflow-y-auto"
       >
-        <div className="hs-overlay-open:mt-7 bg-card hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto h-[calc(100%-3.5rem)] min-h-[calc(100%-3.5rem)] flex items-center">
-          <div className="w-full max-h-full overflow-hidden bg-card flex flex-col bg-background border shadow-sm rounded-xl">
+        <div className="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto h-[calc(100%-3.5rem)] min-h-[calc(100%-3.5rem)] flex items-center">
+          <div className="w-full max-h-full overflow-hidden bg-card flex flex-col border border-border shadow-sm rounded-xl">
             <div className="flex justify-between items-center py-3 px-4 border-b ">
               <h3 className="font-bold text-text">Profile</h3>
               <button

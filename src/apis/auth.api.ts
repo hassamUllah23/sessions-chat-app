@@ -1,11 +1,10 @@
 import { GET, PATCH, POST } from "../services/axios.service";
 import {
   ChangePasswordParams,
-  ChangePasswordResponse,
+  ForgotPasswordParams,
   LoginParams,
   LoginResponse,
   RegisterParams,
-  User,
 } from "../utils/types.utils";
 
 const register = async (
@@ -43,19 +42,30 @@ const login = async (data: LoginParams): Promise<LoginResponse | null> => {
   return resp;
 };
 
-const changePassword = async (
-  data: ChangePasswordParams,
-): Promise<ChangePasswordResponse> => {
-  let resp: ChangePasswordResponse = {};
+const changePassword = async (data: ChangePasswordParams): Promise<boolean> => {
+  let resp: boolean = false;
   try {
     const url = "auth/change-password";
     const response = await PATCH<ChangePasswordParams>(url, data);
 
     if (response?.data?.status !== 200) {
-      resp.error = response?.data.message;
-      resp.result = false;
-    } else {
-      resp.result = true;
+      resp = true;
+    }
+    return resp;
+  } catch (error) {
+    console.log(error);
+    return resp;
+  }
+};
+
+const forgotPassword = async (data: ForgotPasswordParams): Promise<boolean> => {
+  let resp: boolean = false;
+  try {
+    const url = "auth/forgot-password";
+    const response = await PATCH<ForgotPasswordParams>(url, data);
+
+    if (response?.data?.status !== 200) {
+      resp = true;
     }
     return resp;
   } catch (error) {
@@ -68,6 +78,7 @@ const AuthApiClient = {
   login,
   changePassword,
   register,
+  forgotPassword,
 };
 
 export { AuthApiClient };

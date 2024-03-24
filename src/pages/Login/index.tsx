@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { DarkModeSwitch, InputLabel } from "../../components";
+import { InputLabel } from "../../components";
 import { AuthApiClient } from "../../apis/auth.api";
 import { setAlert } from "../../store/slices/general.slice";
 import { useAppDispatch } from "../../store/store";
@@ -48,7 +48,7 @@ const Login = ({}: Props) => {
                   type="text"
                   name="username"
                   id="username"
-                  className="bg-background border border-border text-text  sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-background border border-border text-text sm:text-sm rounded-lg block w-full p-2.5"
                   placeholder="Enter username"
                   onChange={(e) => setUsername(e.target.value)}
                   value={username}
@@ -61,7 +61,7 @@ const Login = ({}: Props) => {
                   type="password"
                   name="password"
                   id="password"
-                  className="bg-background border border-border text-text sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:focus:bg-primary"
+                  className="bg-background border border-border text-text sm:text-sm rounded-lg  focus:border-primary-600 block w-full p-2.5"
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter password"
                   value={password}
@@ -79,7 +79,7 @@ const Login = ({}: Props) => {
 
               <button
                 type="submit"
-                className="w-full bg-primary hover:bg-primary/50 border-2 text-white focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                className="w-full bg-primary text-white border border-transparent hover:border-white font-medium rounded-lg text-sm px-5 py-2.5 text-center"
               >
                 Sign in
               </button>

@@ -1,18 +1,41 @@
 import { FormEvent, useState } from "react";
 import { InputLabel } from "../../components";
 import { useNavigate } from "react-router-dom";
+import { AuthApiClient } from "../../apis/auth.api";
+import { useAppDispatch } from "../../store/store";
+import { setAlert } from "../../store/slices/general.slice";
 
 type Props = {};
 
 function ForgotPassword({}: Props) {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const [email, setEmail] = useState<string>("");
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log({ email });
-    navigate("/");
+    AuthApiClient.forgotPassword({ email }).then((res) => {
+      if (res) {
+        dispatch(
+          setAlert({
+            open: true,
+            severity: "success",
+            message: "A new password has been sent to your email address",
+          }),
+        );
+        navigate("/");
+      } else {
+        dispatch(
+          setAlert({
+            open: true,
+            severity: "error",
+            message: "Something went wrong",
+          }),
+        );
+      }
+    });
   };
   return (
     <section className="bg-background">
