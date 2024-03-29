@@ -20,13 +20,13 @@ function ConversationListItem({ conversation }: Props) {
       onClick={handleSelect}
       className="hover:brightness-90 pl-3 pr-5 gap-x-5 border border-border flex-nowrap py-2 flex flex-row items-center justify-between w-full bg-background rounded-md cursor-pointer"
     >
-      <div className="w-11/12 flex flex-col gap-y-2">
+      <div className="w-11/12 flex flex-col gap-y-2 py-2">
         <p className="text-text font-semibold text-sm">
           {conversation.isGroup
             ? resolveConversationTitle(conversation)
             : resolveSingleSender(conversation)}
         </p>
-        <p className="text-xs text-link  truncate">Last message here</p>
+        {/* <p className="text-xs text-link truncate">Last message here</p> */}
       </div>
 
       {conversation.isGroup ? (

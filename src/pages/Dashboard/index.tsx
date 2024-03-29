@@ -24,7 +24,7 @@ function Dashboard({}: Props) {
   }, [location.pathname]);
 
   return (
-    <div className="h-full w-full bg-background">
+    <div className="flex flex-col h-full w-full bg-background">
       <Navbar />
       <SearchModal />
       <ProfileModal />
@@ -38,7 +38,7 @@ function Dashboard({}: Props) {
         </div>
 
         {/* Current Conversation */}
-        <div className="w-2/3 border-t border-l h-ful border-border">
+        <div className="w-2/3 border-t border-l h-full border-border">
           <div className="flex flex-col w-full h-full">
             <Header
               title={
@@ -53,7 +53,9 @@ function Dashboard({}: Props) {
               }
               hidden={currentConversation ? false : true}
             />
-            {currentConversation ? <CurrentConversation /> : <EmptyBox />}
+            <div className="flex-1">
+              {currentConversation ? <CurrentConversation /> : <EmptyBox />}
+            </div>
           </div>
         </div>
       </div>

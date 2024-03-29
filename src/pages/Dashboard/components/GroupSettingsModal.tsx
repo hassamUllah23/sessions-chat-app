@@ -220,7 +220,7 @@ function GroupSettingsModal({}: Props) {
                 </svg>
               </button>
             </div>
-            <div className="p-5">
+            <div className="p-5 overflow-y-auto">
               <div className="flex flex-col gap-1">
                 <p className="text-lg text-text">Members</p>
                 {duplicateParticipants?.map(
@@ -245,10 +245,12 @@ function GroupSettingsModal({}: Props) {
                           style={{ backgroundColor: "" }}
                         >
                           {GroupRoles.map((role, index) => (
-                            <option key={index} value={role}>
-                              <p className="capitalize text-text" color="red">
-                                {role}
-                              </p>
+                            <option
+                              key={index}
+                              value={role}
+                              className="capitalize text-text"
+                            >
+                              {role}
                             </option>
                           ))}
                         </Select>
@@ -367,7 +369,7 @@ function GroupSettingsModal({}: Props) {
 
               <button
                 type="button"
-                className="w-full text-error bg-transparent border-2 border-error font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                className="mt-5 w-full text-error bg-transparent border-2 border-error font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 onClick={handleLeave}
               >
                 <div className="flex flex-row items-center justify-center gap-2">

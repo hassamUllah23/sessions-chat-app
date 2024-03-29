@@ -128,12 +128,13 @@ function MessageInput({ socket }: { socket: Socket | null }) {
               ...currentConversation,
               messages: [
                 ...currentConversation.messages,
-                {
-                  conversation: currentConversation._id,
-                  sender: localStorage.getItem("userId") as string,
-                  text: newMessage,
-                  attachment: attachmentUrl,
-                },
+                { ...sentMessage },
+                // {
+                //   conversation: currentConversation._id,
+                //   sender: localStorage.getItem("userId") as string,
+                //   text: newMessage,
+                //   attachment: attachmentUrl,
+                // },
               ] as Array<Message>,
             }),
           );
@@ -173,17 +174,12 @@ function MessageInput({ socket }: { socket: Socket | null }) {
   return (
     <div className="bg-card w-full p-3">
       <div className="flex flex-col gap-3">
-        {attachment ? (
-          <div className="text-text py-1.5 px-2.5 border border-border text-sm w-fit rounded-md">
-            <p>{attachment.name}</p>
-          </div>
-        ) : null}
         <form onSubmit={handleSubmit}>
           <div className="flex flex-row gap-2">
             <input
-              type="newMessage"
-              name="newMessage"
-              id="newMessage"
+              type="text"
+              name="newMessa"
+              id="newMessa"
               className="bg-background p-2.5 border-border text-text sm:text-sm rounded-lg flex-1"
               placeholder="Type here..."
               onChange={(e) => setNewMessage(e.target.value)}
@@ -191,6 +187,12 @@ function MessageInput({ socket }: { socket: Socket | null }) {
               required={attachment ? false : true}
               disabled={loading}
             />
+            {attachment ? (
+              <div className="flex flex-row items-center justify-center py-1.5 px-2.5 border border-border w-fit rounded-md">
+                <p className="text-text text-sm">{attachment.name}</p>
+              </div>
+            ) : null}
+
             <div className="">
               <button
                 type="button"
@@ -227,7 +229,7 @@ function MessageList({ messages }: { messages: Message[] }) {
 
   useEffect(() => {}, [currentConversation]);
   return (
-    <div className={`flex flex-col gap-2 h-[70vh] overflow-y-auto w-full`}>
+    <div className={`flex flex-col gap-2 py-2 h-[72vh] overflow-y-auto w-full`}>
       {messages.map((message, index) => (
         <MessageListItem key={index} message={message} />
       ))}
@@ -247,12 +249,18 @@ function MessageListItem({ message }: { message: Message }) {
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
   };
+
+  useEffect(() => {
+    scrollToBottom();
+    dispatch(setSelectedMessage(undefined));
+  }, []);
   useEffect(() => {
     scrollToBottom();
     dispatch(setSelectedMessage(undefined));
   }, [currentConversation]);
 
   const makeEditable = () => {
+    console.log("it is called");
     setEditedText(message.text as string);
     dispatch(setSelectedMessage(message));
   };
@@ -335,7 +343,7 @@ function MessageListItem({ message }: { message: Message }) {
             </p>
           )}
         <div className="flex flex-col gap-5 items-start">
-          {selectedMessage?._id === message._id ? (
+          {selectedMessage === message ? (
             <div>
               <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
                 <input
@@ -343,28 +351,24 @@ function MessageListItem({ message }: { message: Message }) {
                   name="edited-text"
                   id="edited-text"
                   className="bg-background border border-border text-text sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:focus:primary"
-                  placeholder="Enter name"
+                  placeholder="Type here..."
                   onChange={(e) => setEditedText(() => e.target.value)}
                   value={editedText}
                   required
                 />
               </form>
             </div>
-          ) : (
-            <div>
-              {message.text ? (
-                <div className="flex flex-row gap-5 items-start group">
-                  <LongText text={`${message.text}`} className="text-sm" />
-                  <div
-                    onClick={makeEditable}
-                    className={`p-1 bg-card border border-border rounded-full min-w-fit min-h-fit cursor-pointer hover:bg-background hidden ${(message.sender as string) !== getLoggedInUser()._id ? "" : "group-hover:block"}`}
-                  >
-                    <MdOutlineModeEditOutline className="text-text" size={10} />
-                  </div>
-                </div>
-              ) : null}
+          ) : message.text && message.text?.length > 0 ? (
+            <div className="flex flex-row gap-5 items-start group">
+              <LongText text={`${message.text}`} className="text-sm" />
+              <div
+                onClick={makeEditable}
+                className={`p-1 bg-card border border-border rounded-full min-w-fit min-h-fit cursor-pointer hover:bg-background hidden ${(message.sender as string) !== getLoggedInUser()._id ? "" : "group-hover:block"}`}
+              >
+                <MdOutlineModeEditOutline className="text-text" size={10} />
+              </div>
             </div>
-          )}
+          ) : null}
 
           {message.attachment ? (
             <a href={message.attachment} target="_blank">
