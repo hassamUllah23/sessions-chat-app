@@ -4,6 +4,8 @@ import { InputLabel } from "../../components";
 import { AuthApiClient } from "../../apis/auth.api";
 import { setAlert } from "../../store/slices/general.slice";
 import { useAppDispatch } from "../../store/store";
+import { setLoggedInUser, setUserId } from "../../store/slices/user.slice";
+import { User } from "../../utils/types.utils";
 type Props = {};
 
 const Login = ({}: Props) => {
@@ -15,9 +17,7 @@ const Login = ({}: Props) => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log({ username, password });
     AuthApiClient.login({ password, username }).then((response) => {
-      console.log({ response });
       if (response?.error) {
         dispatch(
           setAlert({
@@ -27,6 +27,8 @@ const Login = ({}: Props) => {
           }),
         );
       } else {
+        dispatch(setLoggedInUser(response?.user as User));
+        dispatch(setUserId(response?.userId as string));
         navigate("/dashboard");
       }
     });

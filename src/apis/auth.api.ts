@@ -33,8 +33,10 @@ const login = async (data: LoginParams): Promise<LoginResponse | null> => {
     } else {
       resp.token = response?.data.token;
       resp.userId = response?.data.userId;
+      resp.user = response?.data.user;
       localStorage.setItem("token", response?.data.token);
       localStorage.setItem("userId", response?.data.userId);
+      localStorage.setItem("user", JSON.stringify(response?.data.user));
     }
   } catch (error) {
     resp.error = "Something went wrong";
@@ -53,7 +55,7 @@ const changePassword = async (data: ChangePasswordParams): Promise<boolean> => {
     }
     return resp;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return resp;
   }
 };
@@ -69,7 +71,7 @@ const forgotPassword = async (data: ForgotPasswordParams): Promise<boolean> => {
     }
     return resp;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return resp;
   }
 };

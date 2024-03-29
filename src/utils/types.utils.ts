@@ -1,3 +1,5 @@
+import { InviteStatusEnum } from "./enums.utils";
+
 export type AlertState = {
   open: boolean;
   message: string;
@@ -40,11 +42,12 @@ export type ForgotPasswordParams = {
 export type LoginResponse = {
   token?: string | undefined;
   userId?: string | undefined;
+  user?: User | undefined;
   error?: string | undefined;
 };
 
 export type User = {
-  _id?: string;
+  _id: string;
   email: string;
   password: string;
   username: string;
@@ -60,4 +63,38 @@ export type User = {
   updatedAt?: Date;
 };
 
-export type Conversation = {};
+export type Message = {
+  _id?: string;
+  text?: string;
+  attachment?: string;
+  sender: User | string;
+  conversation: Conversation | string;
+  createdAt?: Date;
+  updatedAt?: Date;
+};
+
+export type Conversation = {
+  _id: string;
+  name?: string | undefined;
+  isGroup?: boolean;
+  messages: Array<Message>;
+  latestMessage?: Message | string | undefined | null;
+  participants: Array<Participant>;
+  createdAt?: Date;
+  updatedAt?: Date;
+};
+
+export type Invite = {
+  _id: string;
+  status: InviteStatusEnum;
+  adminId: string | User;
+  inviteeId: string | User;
+  conversationId: string | Conversation;
+  createdAt?: Date;
+  updatedAt?: Date;
+};
+
+export type Participant = {
+  user: string | User;
+  role?: "admin" | "member" | string;
+};

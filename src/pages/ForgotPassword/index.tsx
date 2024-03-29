@@ -15,7 +15,6 @@ function ForgotPassword({}: Props) {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log({ email });
     AuthApiClient.forgotPassword({ email }).then((res) => {
       if (res) {
         dispatch(

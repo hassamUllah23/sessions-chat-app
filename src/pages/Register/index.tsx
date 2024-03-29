@@ -18,7 +18,6 @@ const Register = ({}: Props) => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log({ name, username, email, password });
     AuthApiClient.register({ email, name, password, username }).then(
       (response) => {
         if (response?.error) {

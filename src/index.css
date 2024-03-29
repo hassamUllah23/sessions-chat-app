@@ -11,16 +11,20 @@ body {
     --color-background: 249, 250, 251;
     --color-card: 255, 255, 255;
     --color-text: 0, 0, 0;
+    --color-error: 226, 54, 54;
+    --color-success: 20,104,101;
     --color-link: 107, 114, 128;
-    --color-border: 209 213 219;
+    --color-border: 225, 228, 232;
     --color-modal-background: 107 114 128;
 }
 
 .dark {
-    --color-primary: 2, 69, 158;
+    --color-primary: 56, 198, 245;
     --color-background: 15, 25, 36;
     --color-card: 31, 41, 55;
     --color-text: 255, 255, 255;
+    --color-error: 226, 54, 54;
+    --color-success: 20, 184, 61;
     --color-link: 156 163 175;
     --color-border: 107, 114, 128;
     --color-modal-background: 17 24 39;

@@ -14,7 +14,6 @@ function ChangePassword({}: Props) {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log({ oldPassword, newPassword, confirmPassword });
     AuthApiClient.changePassword({
       userId: localStorage.getItem("userId") as string,
       oldPassword: oldPassword,

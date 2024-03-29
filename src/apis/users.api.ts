@@ -1,5 +1,16 @@
+import { AxiosResponse } from "axios";
 import { GET, PATCH } from "../services/axios.service";
 import { User, UpdateProfileParams } from "../utils/types.utils";
+
+type BlockParams = {
+  id: string;
+  currentId: string;
+};
+
+type UnblockParams = {
+  id: string;
+  currentId: string;
+};
 
 const list = async (): Promise<Array<User>> => {
   const url = "users/list";
@@ -7,10 +18,56 @@ const list = async (): Promise<Array<User>> => {
   return response?.data;
 };
 
-const getOne = async ({ userId }: { userId: string }): Promise<User> => {
+const getOne = async ({
+  userId,
+}: {
+  userId: string;
+}): Promise<User | undefined> => {
   const url = "users/get";
   const response = await GET<{ userId: string }>(url, { userId: userId });
   return response?.data;
+};
+
+const getByUsername = async ({
+  username,
+}: {
+  username: string;
+}): Promise<AxiosResponse | null> => {
+  const url = "users/get/username";
+  return await GET<{ username: string }>(url, { username: username });
+};
+
+const addToContacts = async ({
+  currentId,
+  id,
+}: {
+  id: string;
+  currentId: string;
+}): Promise<boolean> => {
+  const url = "users/add-contact";
+  let resp: boolean = false;
+  const response = await PATCH<{ id: string; currentId: string }>(url, {
+    id: id,
+    currentId: currentId,
+  });
+  if (response?.status === 200) {
+    resp = true;
+  }
+  return resp;
+};
+
+const addToBlocklist = async (
+  params: BlockParams,
+): Promise<AxiosResponse | null> => {
+  const url = "users/block";
+  return await PATCH<BlockParams>(url, { ...params });
+};
+
+const unblock = async (
+  params: UnblockParams,
+): Promise<AxiosResponse | null> => {
+  const url = "users/unblock";
+  return await PATCH<UnblockParams>(url, { ...params });
 };
 
 const udpate = async (
@@ -29,7 +86,7 @@ const udpate = async (
     }
     return resp;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return resp;
   }
 };
@@ -38,6 +95,10 @@ const UsersApiClient = {
   udpate,
   list,
   getOne,
+  getByUsername,
+  addToBlocklist,
+  unblock,
+  addToContacts,
 };
 
 export { UsersApiClient };

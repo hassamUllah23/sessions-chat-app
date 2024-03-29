@@ -7,6 +7,8 @@ import {
   setOpenSettingsModal,
 } from "../store/slices/modal.slice";
 import { useNavigate } from "react-router-dom";
+import { setCurrentConversation } from "../store/slices/conversation.slice";
+import { setLoggedInUser } from "../store/slices/user.slice";
 type Props = {};
 
 function Navbar({}: Props) {
@@ -14,16 +16,53 @@ function Navbar({}: Props) {
   const navigate = useNavigate();
   const handleLogout = () => {
     navigate("/");
+    localStorage.clear();
+    dispatch(setCurrentConversation(null));
+    dispatch(setLoggedInUser(undefined));
   };
 
   return (
     <nav className="bg-background border-border">
       <div className="flex flex-wrap items-center justify-between p-4 w-full px-10">
-        <div className="flex items-center space-x-3 rtl:space-x-reverse">
-          <img src="messenger.png" className="h-8" />
-          <span className="self-center text-2xl font-semibold whitespace-nowrap text-text">
-            ChatApp
-          </span>
+        <div className="flex flex-row gap-x-5 justify-start items-center">
+          <div className="flex items-center space-x-3 rtl:space-x-reverse">
+            <img src="messenger.png" className="h-8" />
+            <span className="self-center text-2xl font-semibold whitespace-nowrap text-text">
+              ChatApp
+            </span>
+          </div>
+          <div className="">
+            <ul>
+              <li data-hs-overlay="#search-modal">
+                <div className="relative pointer-events-none cursor-pointer">
+                  <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <svg
+                      className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                      />
+                    </svg>
+                  </div>
+                  <input
+                    type="search"
+                    id="default-search"
+                    className="block w-full p-2 ps-10 text-sm border rounded-lg text-text border-border bg-background"
+                    placeholder="Search people..."
+                    required
+                  />
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
         <button
           data-collapse-toggle="navbar-default"
@@ -99,7 +138,7 @@ const ListItem = ({
       {icon}
       <p
         className={
-          "cursor-pointer block py-2 px-3 text-text rounded hover:bg-background/50 md:p-0  "
+          "cursor-pointer block py-2 px-3 text-text rounded hover:bg-background/50 md:p-0 text-sm "
         }
       >
         {label}
