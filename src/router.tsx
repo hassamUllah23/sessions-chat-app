@@ -1,4 +1,4 @@
-import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { CustomAlert } from "./components/Alert";
 import { useAppSelector } from "./store/store";
 import { AlertState } from "./utils/types.utils";
@@ -22,14 +22,12 @@ export const MyRouter = () => {
         />
       )}
 
-      <Router>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forgot" element={<ForgotPassword />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-        </Routes>
-      </Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot" element={<ForgotPassword />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
     </div>
   );
 };

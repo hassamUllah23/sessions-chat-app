@@ -150,8 +150,15 @@ function MessageInput({ socket }: { socket: Socket | null }) {
           }),
         );
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      dispatch(
+        setAlert({
+          message: (error?.response?.data as string) || "Something went wrong",
+          severity: "error",
+          open: true,
+        }),
+      );
     } finally {
       setLoading((_prev) => false);
       setAttachment((_prev) => null);
@@ -260,7 +267,6 @@ function MessageListItem({ message }: { message: Message }) {
   }, [currentConversation]);
 
   const makeEditable = () => {
-    console.log("it is called");
     setEditedText(message.text as string);
     dispatch(setSelectedMessage(message));
   };

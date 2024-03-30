@@ -56,6 +56,25 @@ const addToContacts = async ({
   return resp;
 };
 
+const removeContact = async ({
+  currentId,
+  id,
+}: {
+  id: string;
+  currentId: string;
+}): Promise<boolean> => {
+  const url = "users/remove-contact";
+  let resp: boolean = false;
+  const response = await PATCH<{ id: string; currentId: string }>(url, {
+    id: id,
+    currentId: currentId,
+  });
+  if (response?.status === 200) {
+    resp = true;
+  }
+  return resp;
+};
+
 const addToBlocklist = async (
   params: BlockParams,
 ): Promise<AxiosResponse | null> => {
@@ -99,6 +118,7 @@ const UsersApiClient = {
   addToBlocklist,
   unblock,
   addToContacts,
+  removeContact,
 };
 
 export { UsersApiClient };

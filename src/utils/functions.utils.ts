@@ -45,6 +45,9 @@ function resolveGroupMessageSender(
 function isLoggedInUser(userId: string): boolean {
   return userId === localStorage.getItem("userId");
 }
+// function issESSION(conversation: Conversation): boolean {
+//   return conversation.isSession;
+// }
 
 function isGroupAdmin({
   userId = getLoggedInUser()._id as string,

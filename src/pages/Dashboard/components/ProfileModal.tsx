@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
-import { useAppDispatch } from "../../../store/store";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
 import { InputLabel, UserName } from "../../../components";
 import { ChangePassword } from "./ChangePassword";
 import { UsersApiClient } from "../../../apis/users.api";
@@ -13,20 +13,13 @@ type Props = {};
 
 function ProfileModal({}: Props) {
   const dispatch = useAppDispatch();
+  const { currentConversation } = useAppSelector((state) => state.conversation);
 
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [contacts, setContacts] = useState<Array<string | User>>([]);
   const [invites, setInvites] = useState<Array<Invite>>([]);
-
-  useEffect(() => {
-    InvitesApiClient.listPendingUserInvites({
-      userId: localStorage.getItem("userId") as string,
-    }).then((response) => {
-      setInvites(() => response || []);
-    });
-  }, []);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -66,7 +59,13 @@ function ProfileModal({}: Props) {
       setUsername(response?.username || "");
       setContacts(response?.contacts || []);
     });
-  }, []);
+
+    InvitesApiClient.listPendingUserInvites({
+      userId: localStorage.getItem("userId") as string,
+    }).then((response) => {
+      setInvites(() => response || []);
+    });
+  }, [currentConversation]);
 
   const handleAccept = (params: AcceptParams) => {
     InvitesApiClient.accept(params)
@@ -94,6 +93,42 @@ function ProfileModal({}: Props) {
           }),
         );
       });
+  };
+
+  const handleRemove = (contactId: string) => {
+    UsersApiClient.removeContact({
+      currentId: localStorage.getItem("userId") || "",
+      id: contactId || "",
+    }).then((response) => {
+      if (response) {
+        ConversationsApiClient.list({
+          userId: localStorage.getItem("userId") as string,
+        }).then((data) => {
+          dispatch(setConversations(data));
+        });
+
+        setContacts((prev) => {
+          let newArray = [...prev];
+          newArray = newArray.filter((c) => (c as User)._id !== contactId);
+          return [...newArray];
+        });
+        dispatch(
+          setAlert({
+            open: true,
+            severity: "success",
+            message: "User removed from contacts",
+          }),
+        );
+      } else {
+        dispatch(
+          setAlert({
+            open: true,
+            severity: "error",
+            message: "Something went wrong",
+          }),
+        );
+      }
+    });
   };
 
   return (
@@ -274,7 +309,35 @@ function ProfileModal({}: Props) {
                       aria-labelledby="hs-contacts-accordion"
                     >
                       {contacts.map((contact: string | User, index) => {
-                        return <UserName key={index} user={contact as User} />;
+                        return (
+                          <div
+                            key={index}
+                            className="flex flex-row justify-between w-full mb-2"
+                          >
+                            <UserName user={contact as User} />
+                            <div className="flex flex-row gap-3">
+                              {/* <p
+                                onClick={() => {
+                                  // handleAccept({
+                                  //   inviteId: invite._id,
+                                  //   inviteeId: invite.inviteeId as string,
+                                  // });
+                                }}
+                                className={`cursor-pointer border border-border py-1 px-2.5 rounded-md hover:brightness-90 text-sm capitalize text-primary bg-primary/10`}
+                              >
+                                Say Hello!
+                              </p> */}
+                              <p
+                                onClick={() => {
+                                  handleRemove((contact as User)._id);
+                                }}
+                                className={`cursor-pointer border border-border py-1 px-2.5 rounded-md hover:brightness-90 text-sm capitalize text-error bg-error/10`}
+                              >
+                                Remove
+                              </p>
+                            </div>
+                          </div>
+                        );
                       })}
                     </div>
                   </div>

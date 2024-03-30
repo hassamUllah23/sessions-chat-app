@@ -7,6 +7,8 @@ import { setAlert } from "../../../store/slices/general.slice";
 import { AxiosResponse } from "axios";
 import { UserName, SearchResults } from "../../../components";
 import { isLoggedInUser } from "../../../utils/functions.utils";
+import { ConversationsApiClient } from "../../../apis/conversations.api";
+import { setConversations } from "../../../store/slices/conversation.slice";
 
 type Props = {};
 
@@ -55,6 +57,12 @@ function SearchModal({}: Props) {
         id: data?._id || "",
       }).then((response) => {
         if (response) {
+          ConversationsApiClient.list({
+            userId: localStorage.getItem("userId") as string,
+          }).then((data) => {
+            dispatch(setConversations(data));
+          });
+
           dispatch(
             setAlert({
               open: true,

@@ -1,4 +1,4 @@
-import { InviteStatusEnum } from "./enums.utils";
+import { InviteStatusEnum, SessionStatusEnum } from "./enums.utils";
 
 export type AlertState = {
   open: boolean;
@@ -80,6 +80,8 @@ export type Conversation = {
   messages: Array<Message>;
   latestMessage?: Message | string | undefined | null;
   participants: Array<Participant>;
+  session: string | Session | null | undefined;
+  isSession: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 };
@@ -94,6 +96,15 @@ export type Invite = {
   updatedAt?: Date;
 };
 
+export type Session = {
+  _id: string;
+  status: SessionStatusEnum;
+  duration: number; // in milliseconds
+  conversation: string | Conversation;
+  parentConversation: string | Conversation;
+  createdAt?: Date;
+  updatedAt?: Date;
+};
 export type Participant = {
   user: string | User;
   role?: "admin" | "member" | string;

@@ -3,6 +3,7 @@ import userSlice from "./slices/user.slice";
 import generalSlice from "./slices/general.slice";
 import modalSlice from "./slices/modal.slice";
 import conversationSlice from "./slices//conversation.slice";
+import sessionsSlice from "./slices/sessions.slice";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     general: generalSlice,
     modal: modalSlice,
     conversation: conversationSlice,
+    session: sessionsSlice,
   },
 });
 
