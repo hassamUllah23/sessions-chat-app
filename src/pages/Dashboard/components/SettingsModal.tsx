@@ -15,6 +15,7 @@ function SettingsModal({}: Props) {
   const dispatch = useAppDispatch();
   const { loggedInUser } = useAppSelector((state) => state.user);
   const [blockList, setBlockList] = useState<Array<string | User>>([]);
+  const [notifications, setNotifications] = useState<boolean>(false);
 
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<User | undefined>(undefined);
@@ -29,6 +30,7 @@ function SettingsModal({}: Props) {
           const response: AxiosResponse | null =
             await UsersApiClient.getByUsername({
               username: key,
+              searcherId: localStorage.getItem("userId") || "",
             });
           if (response?.status === 200) {
             const user: User = response.data;
@@ -54,6 +56,7 @@ function SettingsModal({}: Props) {
       userId: localStorage.getItem("userId") as string,
     }).then((response) => {
       setBlockList(response?.blockList || []);
+      setNotifications(response?.settings?.notifications || false);
     });
   }, []);
 
@@ -141,6 +144,36 @@ function SettingsModal({}: Props) {
     }
   };
 
+  const handleChangeNotifications = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setNotifications(() => event.target.checked);
+    UsersApiClient.toggleNotification({
+      userId: localStorage.getItem("userId") as string,
+      notifications: event.target.checked,
+      // settings: { notifications: event.target.checked },
+    })
+      .then((_response) => {
+        dispatch(
+          setAlert({
+            message: "Notifications toggled successfully",
+            open: true,
+            severity: "success",
+          }),
+        );
+      })
+      .catch((error) => {
+        console.error(error);
+        dispatch(
+          setAlert({
+            message: "Something went wrong",
+            open: true,
+            severity: "error",
+          }),
+        );
+      });
+  };
+
   return (
     <div className="w-full">
       <div
@@ -181,7 +214,10 @@ function SettingsModal({}: Props) {
               </div>
               <div className="bg-card flex flex-row items-center justify-between py-2.5">
                 <p className="text-text text-lg">Notifications</p>
-                <Switch />
+                <Switch
+                  checked={notifications}
+                  onChange={handleChangeNotifications}
+                />
               </div>
 
               <div className="bg-card py-2.5">

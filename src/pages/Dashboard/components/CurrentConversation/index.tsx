@@ -25,13 +25,13 @@ import { set } from "lodash";
 
 type Props = {};
 
-let socket: Socket | null = null;
+let socket: Socket = io(import.meta.env.VITE_BACKEND_ADDRESS);
 function CurrentConversation({}: Props) {
   const dispatch = useAppDispatch();
   const { currentConversation } = useAppSelector((state) => state.conversation);
   const [_socketConnected, setSocketConnected] = useState<boolean>(false);
   useEffect(() => {
-    socket = io(import.meta.env.VITE_BACKEND_ADDRESS);
+    // socket = io(import.meta.env.VITE_BACKEND_ADDRESS);
     socket.on("connceted", () => {
       console.info("connected to server");
       setSocketConnected(true);
@@ -116,6 +116,8 @@ function MessageInput({ socket }: { socket: Socket | null }) {
         if (currentConversation && currentConversation.messages) {
           const sentMessage = response.data as Message;
           // send the api response to the socket server
+          console.log({ socket });
+          console.log("sending new message back to socket");
           socket?.emit(
             "new message",
             currentConversation.participants.map(

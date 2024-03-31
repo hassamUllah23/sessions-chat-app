@@ -13,6 +13,8 @@ import { Header } from "./components/CurrentConversation/Header";
 import { resolveConversationTitle } from "../../utils/functions.utils";
 import "preline/preline";
 import { IStaticMethods } from "preline/preline";
+import { useEffect } from "react";
+import { UsersApiClient } from "../../apis/users.api";
 declare global {
   interface Window {
     HSStaticMethods: IStaticMethods;
@@ -24,6 +26,20 @@ type Props = {};
 function Dashboard({}: Props) {
   const { currentConversation } = useAppSelector((state) => state.conversation);
 
+  useEffect(() => {
+    const fcmToken = localStorage.getItem("fcmToken") as string;
+    if (fcmToken === null || fcmToken === undefined || fcmToken === "") {
+      // do nothing
+      console.error("FCM TOKEN NOT FOUND IN LOCAL STORAGE");
+    } else {
+      UsersApiClient.updateFcmToken({
+        fcmToken: localStorage.getItem("fcmToken") as string,
+        userId: localStorage.getItem("userId") as string,
+      }).then((data) => {
+        console.log("Firebase Token Updated: ", data);
+      });
+    }
+  }, []);
   return (
     <div className="flex flex-col h-full w-full bg-background">
       <Navbar />

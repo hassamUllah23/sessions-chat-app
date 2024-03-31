@@ -28,13 +28,12 @@ const getOne = async ({
   return response?.data;
 };
 
-const getByUsername = async ({
-  username,
-}: {
+const getByUsername = async (params: {
   username: string;
+  searcherId: string;
 }): Promise<AxiosResponse | null> => {
   const url = "users/get/username";
-  return await GET<{ username: string }>(url, { username: username });
+  return await GET<{ username: string }>(url, { ...params });
 };
 
 const addToContacts = async ({
@@ -89,6 +88,40 @@ const unblock = async (
   return await PATCH<UnblockParams>(url, { ...params });
 };
 
+type ToggleThemeParams = {
+  userId: string;
+  theme: "dark" | "light";
+};
+const toggleTheme = async (
+  params: ToggleThemeParams,
+): Promise<AxiosResponse | null> => {
+  const url = "users/toggle-theme";
+  return await PATCH<ToggleThemeParams>(url, { ...params });
+};
+
+type ToggleNotifcationsParams = {
+  userId: string;
+  notifications: boolean;
+};
+const toggleNotification = async (
+  params: ToggleNotifcationsParams,
+): Promise<AxiosResponse | null> => {
+  const url = "users/toggle-notifications";
+  return await PATCH<ToggleNotifcationsParams>(url, { ...params });
+};
+
+type UpdateFcmParams = {
+  userId: string;
+  fcmToken: string;
+};
+
+const updateFcmToken = async (
+  params: UpdateFcmParams,
+): Promise<AxiosResponse | null> => {
+  const url = "users/fcm";
+  return await PATCH<UpdateFcmParams>(url, { ...params });
+};
+
 const udpate = async (
   data: UpdateProfileParams,
 ): Promise<UpdateProfileParams> => {
@@ -119,6 +152,9 @@ const UsersApiClient = {
   unblock,
   addToContacts,
   removeContact,
+  toggleNotification,
+  toggleTheme,
+  updateFcmToken,
 };
 
 export { UsersApiClient };

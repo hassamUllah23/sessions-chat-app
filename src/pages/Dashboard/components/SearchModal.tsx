@@ -29,6 +29,7 @@ function SearchModal({}: Props) {
           const response: AxiosResponse | null =
             await UsersApiClient.getByUsername({
               username: key,
+              searcherId: localStorage.getItem("userId") || "",
             });
           if (response?.status === 200) {
             const user: User = response.data;

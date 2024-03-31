@@ -60,6 +60,7 @@ function GroupSettingsModal({}: Props) {
           const response: AxiosResponse | null =
             await UsersApiClient.getByUsername({
               username: key,
+              searcherId: localStorage.getItem("userId") || "",
             });
           if (response?.status === 200) {
             const user: User = response.data;
@@ -342,6 +343,80 @@ function GroupSettingsModal({}: Props) {
 
               {currentConversation ? (
                 <>
+                  <div className="flex flex-col gap-1">
+                    <p className="text-lg text-text">Members</p>
+                    {duplicateParticipants?.map(
+                      (participant: Participant, index) => (
+                        <div
+                          key={index}
+                          className="flex flex-row justify-between w-full"
+                        >
+                          <UserName
+                            key={index}
+                            user={participant.user as User}
+                          />
+
+                          {currentConversation.isSession ? (
+                            <p
+                              key={index}
+                              className="capitalize text-link font-semibold my-1 text-center"
+                              color="red"
+                            >
+                              {participant.role}
+                            </p>
+                          ) : (
+                            <div>
+                              {isGroupAdmin({
+                                conversation:
+                                  currentConversation as Conversation,
+                              }) ? (
+                                <Select
+                                  id="countries"
+                                  defaultValue={participant.role}
+                                  onChange={(e) => handleChange(e, index)}
+                                  disabled={isLoggedInUser(
+                                    (participant.user as User)._id as string,
+                                  )}
+                                  className="bg-background"
+                                  style={{ backgroundColor: "" }}
+                                >
+                                  {GroupRoles.map((role, index) => (
+                                    <option
+                                      key={index}
+                                      value={role}
+                                      className="capitalize text-text"
+                                    >
+                                      {role}
+                                    </option>
+                                  ))}
+                                </Select>
+                              ) : (
+                                <p
+                                  key={index}
+                                  className="capitalize text-link font-semibold my-1 text-center"
+                                  color="red"
+                                >
+                                  {participant.role}
+                                </p>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      ),
+                    )}
+                    {currentConversation.isSession ||
+                    !isGroupAdmin({
+                      conversation: currentConversation,
+                    }) ? null : (
+                      <button
+                        type="button"
+                        className=" text-white bg-primary focus:ring-4 my-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
+                        onClick={handleSaveChanges}
+                      >
+                        Save Changes
+                      </button>
+                    )}
+                  </div>
                   {currentConversation.isSession ? null : (
                     <>
                       {/* INVITATIONS */}
@@ -416,13 +491,13 @@ function GroupSettingsModal({}: Props) {
                                 </div>
                               ) : null}
                             </SearchResults>
-                            <button
+                            {/* <button
                               type="button"
                               className=" text-white bg-primary focus:ring-4 my-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
-                              onClick={handleSaveChanges}
+                              onClick={handleInvite}
                             >
-                              Save Changes
-                            </button>
+                              Invite People
+                            </button> */}
                           </div>
                           <div className="flex flex-col gap-1 my-4">
                             <p className="text-lg text-text">Sent Invites</p>
@@ -479,7 +554,7 @@ function GroupSettingsModal({}: Props) {
                                   }}
                                 >
                                   <option
-                                    value={1800000}
+                                    value={15000}
                                     className="capitalize text-text"
                                     selected
                                   >
@@ -552,76 +627,6 @@ function GroupSettingsModal({}: Props) {
                       </button>
                     </>
                   )}
-
-                  <div className="flex flex-col gap-1">
-                    <p className="text-lg text-text">Members</p>
-                    {duplicateParticipants?.map(
-                      (participant: Participant, index) => (
-                        <div
-                          key={index}
-                          className="flex flex-row justify-between w-full"
-                        >
-                          <UserName
-                            key={index}
-                            user={participant.user as User}
-                          />
-
-                          {currentConversation.isSession ? (
-                            <p
-                              key={index}
-                              className="capitalize text-link font-semibold my-1 text-center"
-                              color="red"
-                            >
-                              {participant.role}
-                            </p>
-                          ) : (
-                            <div>
-                              {isGroupAdmin({
-                                conversation:
-                                  currentConversation as Conversation,
-                              }) ? (
-                                <Select
-                                  id="countries"
-                                  defaultValue={participant.role}
-                                  onChange={(e) => handleChange(e, index)}
-                                  disabled={isLoggedInUser(
-                                    (participant.user as User)._id as string,
-                                  )}
-                                  className="bg-background"
-                                  style={{ backgroundColor: "" }}
-                                >
-                                  {GroupRoles.map((role, index) => (
-                                    <option
-                                      key={index}
-                                      value={role}
-                                      className="capitalize text-text"
-                                    >
-                                      {role}
-                                    </option>
-                                  ))}
-                                </Select>
-                              ) : (
-                                <p
-                                  key={index}
-                                  className="capitalize text-link font-semibold my-1 text-center"
-                                  color="red"
-                                >
-                                  {participant.role}
-                                </p>
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      ),
-                    )}
-                    <button
-                      type="button"
-                      className=" text-white bg-primary focus:ring-4 my-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
-                      onClick={handleSaveChanges}
-                    >
-                      Save Changes
-                    </button>
-                  </div>
                 </>
               ) : null}
             </div>
